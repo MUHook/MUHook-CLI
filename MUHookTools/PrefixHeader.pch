@@ -1,0 +1,22 @@
+//
+//  PrefixHeader.pch
+//  MUHookTools
+//
+//  Created by 吴双 on 2020/2/22.
+//  Copyright © 2020 Magic-Unique. All rights reserved.
+//
+
+#ifndef PrefixHeader_pch
+#define PrefixHeader_pch
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#import <CommandLine/CommandLine.h>
+#import <MUFoundation/MUPath.h>
+#import <SSZipArchive/SSZipArchive.h>
+#import "CLLoading+Tools.h"
+
+#define TEMPLATE_VERSION @"0.1.0"
+
+#endif /* PrefixHeader_pch */

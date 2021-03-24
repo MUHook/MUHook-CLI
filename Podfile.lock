@@ -1,0 +1,76 @@
+PODS:
+  - CommandLine (2.5.0):
+    - CommandLine/ANSI (= 2.5.0)
+    - CommandLine/Command (= 2.5.0)
+    - CommandLine/Interface (= 2.5.0)
+    - CommandLine/Launcher (= 2.5.0)
+    - CommandLine/Main (= 2.5.0)
+    - CommandLine/Tools (= 2.5.0)
+  - CommandLine/ANSI (2.5.0):
+    - CommandLine/Main
+    - CommandLine/Tools
+  - CommandLine/Command (2.5.0):
+    - CommandLine/ANSI
+    - CommandLine/Main
+  - CommandLine/Interface (2.5.0):
+    - CommandLine/ANSI
+    - CommandLine/Main
+  - CommandLine/Launcher (2.5.0):
+    - CommandLine/Main
+  - CommandLine/Main (2.5.0)
+  - CommandLine/Tools (2.5.0):
+    - CommandLine/Main
+  - MUFoundation/MUPath (0.0.6)
+  - SSZipArchive (2.2.2)
+  - Templator (0.1.0):
+    - Templator/CocoaPods (= 0.1.0)
+    - Templator/Core (= 0.1.0)
+    - Templator/Git (= 0.1.0)
+    - Templator/Main (= 0.1.0)
+    - Templator/Open (= 0.1.0)
+    - Templator/Replacement (= 0.1.0)
+  - Templator/CocoaPods (0.1.0):
+    - Templator/Core
+  - Templator/Core (0.1.0):
+    - CommandLine
+    - MUFoundation/MUPath
+    - Templator/Main
+  - Templator/Git (0.1.0):
+    - Templator/Core
+  - Templator/Main (0.1.0)
+  - Templator/Open (0.1.0):
+    - Templator/Core
+  - Templator/Replacement (0.1.0):
+    - Templator/Core
+
+DEPENDENCIES:
+  - CommandLine
+  - MUFoundation/MUPath
+  - SSZipArchive
+  - Templator (from `https://github.com/Magic-Unique/Templator.git`)
+
+SPEC REPOS:
+  https://github.com/CocoaPods/Specs.git:
+    - SSZipArchive
+  trunk:
+    - CommandLine
+    - MUFoundation
+
+EXTERNAL SOURCES:
+  Templator:
+    :git: https://github.com/Magic-Unique/Templator.git
+
+CHECKOUT OPTIONS:
+  Templator:
+    :commit: 7d3cbc2196b405cef70b3362db870cd101e27235
+    :git: https://github.com/Magic-Unique/Templator.git
+
+SPEC CHECKSUMS:
+  CommandLine: bbe17fd61d857f9f3098ed1a7d094f63027c661f
+  MUFoundation: 7ba494a348139d1a355a3f20b5ba3de11720c9d4
+  SSZipArchive: fa16b8cc4cdeceb698e5e5d9f67e9558532fbf23
+  Templator: 2469a58512882e2fd1db10d240a7714454f1b0b5
+
+PODFILE CHECKSUM: 132d0dd1cc6a8694d41610eb914ceedf7b1bdf9e
+
+COCOAPODS: 1.8.4
