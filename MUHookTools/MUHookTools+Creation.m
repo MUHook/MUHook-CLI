@@ -52,17 +52,6 @@
             CLError(@"The file is not exist.");
             return 1;
         }
-        
-//        MUHCreator *creator = [[MUHCreator alloc] init];
-//        creator.app = app;
-//        creator.open = [process flag:@"open"];
-//#ifdef DEBUG
-//        creator.distPath = [[MUPath homePath] subpathWithComponent:app.lastPathComponent.stringByDeletingPathExtension];
-//#else
-//        creator.distPath = [[MUPath path] subpathWithComponent:app.lastPathComponent.stringByDeletingPathExtension];
-//#endif
-//        [creator create];
-//        return 0;
 
         NSString *AppBundleName = app.lastPathComponent.stringByDeletingPathExtension;
         NSDictionary *info = [NSDictionary dictionaryWithContentsOfFile:[app subpathWithComponent:@"Info.plist"].string];
@@ -77,7 +66,7 @@
         
         NSString *template = process.queries[@"template"];
         if (!template) {
-            [creator addGitClone:@"git@gitee.com:pica/MUHookTemplate.git" branch:TEMPLATE_VERSION];
+            [creator addGitClone:@"https://github.com/MUHook/Template.git" branch:TEMPLATE_VERSION];
         }
         else if ([template hasPrefix:@"http"] || [template hasPrefix:@"git@"]) {
             [creator addGitClone:template branch:@"master"];
@@ -136,7 +125,7 @@
             open;
         })];
 #ifdef DEBUG
-        [creator create:[MUPath pathWithString:@"~/MMMM"]];
+        [creator create:[[MUPath homePath] subpathWithComponent:TARGET_NAME]];
 #else
         [creator create:[[MUPath path] subpathWithComponent:TARGET_NAME]];
 #endif
