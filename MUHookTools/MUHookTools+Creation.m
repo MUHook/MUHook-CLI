@@ -19,9 +19,11 @@
     create.setQuery(@"app-name").setAbbr('a').optional().setExample(@"AppName").setExplain(@"Custom app name.");
     create.setQuery(@"lib-name").setAbbr('l').optional().setExample(@"AppPlugin").setExplain(@"Dylib file name.");
     create.setQuery(@"template").setAbbr('t').optional().setExample(@"git-url|local-dir").setExplain(@"Template project");
+    create.setFlag(@"no-pod-install").setExplain(@"Skip `pod install` step.");
     [create handleProcess:^int(CLCommand * _Nonnull command, CLProcess * _Nonnull process) {
         NSString *AppName = [process stringForQuery:@"app-name"];
         NSString *LibName = [process stringForQuery:@"lib-name"];
+        BOOL no_pod_install = [process flag:@"no-pod-install"];
         
         MUPath *input = [MUPath pathWithString:[process pathForIndex:0]];
         MUPath *app = nil;
@@ -98,7 +100,9 @@
             dateFormatter.dateFormat = @"yyyy";
             [step replace:@"MUH-TIME-YEAR" to:[dateFormatter stringFromDate:date]];
         }];
-        [creator addStep:[TLPodInstallStep new]];
+        if (!no_pod_install) {
+            [creator addStep:[TLPodInstallStep new]];
+        }
         [creator addStep:[TLStep step:@"Copy Resources" block:^(MUPath *path, id<TLInvoker> invoker) {
             MUPath *packages = [path subpathWithComponent:@"Resources/Packages"];
             [packages createDirectoryWithCleanContents:NO];
@@ -107,23 +111,25 @@
             [from copyTo:target autoCover:YES];
         }]];
         [creator addStep:[TLGitInitStep new]];
-        [creator addStep:({
-            TLOpenStep *open = [TLOpenStep new];
-            open.findFile = ^MUPath *(MUPath *path) {
-                MUPath *file = nil;
-                
-                file = file ?: [path contentsWithFilter:^BOOL(MUPath *content) {
-                    return content.isDirectory && [content isA:@"xcworkspace"];
-                }].firstObject;
-                
-                file = file ?: [path contentsWithFilter:^BOOL(MUPath *content) {
-                    return content.isDirectory && [content isA:@"xcodeproj"];
-                }].firstObject;
-                
-                return file;
-            };
-            open;
-        })];
+        if (!no_pod_install) {
+            [creator addStep:({
+                TLOpenStep *open = [TLOpenStep new];
+                open.findFile = ^MUPath *(MUPath *path) {
+                    MUPath *file = nil;
+                    
+                    file = file ?: [path contentsWithFilter:^BOOL(MUPath *content) {
+                        return content.isDirectory && [content isA:@"xcworkspace"];
+                    }].firstObject;
+                    
+                    file = file ?: [path contentsWithFilter:^BOOL(MUPath *content) {
+                        return content.isDirectory && [content isA:@"xcodeproj"];
+                    }].firstObject;
+                    
+                    return file;
+                };
+                open;
+            })];
+        }
 #ifdef DEBUG
         [creator create:[[MUPath homePath] subpathWithComponent:TARGET_NAME]];
 #else
