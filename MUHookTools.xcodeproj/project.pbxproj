@@ -10,8 +10,6 @@
 		6DD0A08124016B2500F73A37 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0A08024016B2500F73A37 /* main.m */; };
 		6DD0A08A24016C0C00F73A37 /* MUHookTools.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0A08924016C0C00F73A37 /* MUHookTools.m */; };
 		6DD0A08D24016C1D00F73A37 /* MUHookTools+Creation.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0A08C24016C1D00F73A37 /* MUHookTools+Creation.m */; };
-		6DD0A0C82401816600F73A37 /* MUHCreator.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0A0C72401816600F73A37 /* MUHCreator.m */; };
-		6DD0A0CC240244E600F73A37 /* MUHReplaceMap.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0A0CB240244E600F73A37 /* MUHReplaceMap.m */; };
 		6DD0A0D624025F6A00F73A37 /* CLLoading+Tools.m in Sources */ = {isa = PBXBuildFile; fileRef = 6DD0A0D524025F6A00F73A37 /* CLLoading+Tools.m */; };
 		712EB2D0E806EE7BC0C8AA83 /* libPods-MUHookTools.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C606B6CB266E275552D2E0A2 /* libPods-MUHookTools.a */; };
 /* End PBXBuildFile section */
@@ -38,10 +36,6 @@
 		6DD0A08924016C0C00F73A37 /* MUHookTools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUHookTools.m; sourceTree = "<group>"; };
 		6DD0A08B24016C1D00F73A37 /* MUHookTools+Creation.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "MUHookTools+Creation.h"; sourceTree = "<group>"; };
 		6DD0A08C24016C1D00F73A37 /* MUHookTools+Creation.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "MUHookTools+Creation.m"; sourceTree = "<group>"; };
-		6DD0A0C62401816600F73A37 /* MUHCreator.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUHCreator.h; sourceTree = "<group>"; };
-		6DD0A0C72401816600F73A37 /* MUHCreator.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUHCreator.m; sourceTree = "<group>"; };
-		6DD0A0CA240244E600F73A37 /* MUHReplaceMap.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = MUHReplaceMap.h; sourceTree = "<group>"; };
-		6DD0A0CB240244E600F73A37 /* MUHReplaceMap.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = MUHReplaceMap.m; sourceTree = "<group>"; };
 		6DD0A0D424025F6A00F73A37 /* CLLoading+Tools.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "CLLoading+Tools.h"; sourceTree = "<group>"; };
 		6DD0A0D524025F6A00F73A37 /* CLLoading+Tools.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = "CLLoading+Tools.m"; sourceTree = "<group>"; };
 		C606B6CB266E275552D2E0A2 /* libPods-MUHookTools.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-MUHookTools.a"; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -95,10 +89,6 @@
 				6DD0A08924016C0C00F73A37 /* MUHookTools.m */,
 				6DD0A08B24016C1D00F73A37 /* MUHookTools+Creation.h */,
 				6DD0A08C24016C1D00F73A37 /* MUHookTools+Creation.m */,
-				6DD0A0C62401816600F73A37 /* MUHCreator.h */,
-				6DD0A0C72401816600F73A37 /* MUHCreator.m */,
-				6DD0A0CA240244E600F73A37 /* MUHReplaceMap.h */,
-				6DD0A0CB240244E600F73A37 /* MUHReplaceMap.m */,
 				6DD0A08724016B8500F73A37 /* PrefixHeader.pch */,
 			);
 			path = MUHookTools;
@@ -214,12 +204,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				6DD0A0CC240244E600F73A37 /* MUHReplaceMap.m in Sources */,
 				6DD0A0D624025F6A00F73A37 /* CLLoading+Tools.m in Sources */,
 				6DD0A08D24016C1D00F73A37 /* MUHookTools+Creation.m in Sources */,
 				6DD0A08A24016C0C00F73A37 /* MUHookTools.m in Sources */,
 				6DD0A08124016B2500F73A37 /* main.m in Sources */,
-				6DD0A0C82401816600F73A37 /* MUHCreator.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

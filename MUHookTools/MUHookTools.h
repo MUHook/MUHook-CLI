@@ -8,10 +8,12 @@
 
 #import <Foundation/Foundation.h>
 
-NS_ASSUME_NONNULL_BEGIN
-
 @interface MUHookTools : NSObject
 
-@end
++ (NSString *)templateUrlWithGitee:(BOOL)gitee ssh:(BOOL)ssh;
 
-NS_ASSUME_NONNULL_END
++ (MUPath *)cli_rootDirectory;
+
++ (MUPath *)cli_cacheDirectory;
+
+@end

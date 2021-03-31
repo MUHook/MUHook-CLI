@@ -7,7 +7,6 @@
 //
 
 #import "MUHookTools+Creation.h"
-#import "MUHCreator.h"
 #import <Templator/Templator.h>
 
 @implementation MUHookTools (Creation)
@@ -21,15 +20,16 @@
     create.setQuery(@"template").setAbbr('t').optional().setExample(@"git-url|local-dir").setExplain(@"Template project");
     create.setFlag(@"gitee").setExplain(@"Clone template from gitee.com, otherwise github.com");
     create.setFlag(@"ssh").setExplain(@"Clone template with SSH key, otherwise HTTPs");
-//    create.setFlag(@"force-remote").setAbbr('f').setExplain(@"Force use remote repo, ignore local caches");
+    create.setFlag(@"ignore-cache").setExplain(@"Ignore local caches, clone from remote and rebuild cache");
     create.setFlag(@"no-pod-install").setExplain(@"Skip `pod install` step.");
     [create handleProcess:^int(CLCommand * _Nonnull command, CLProcess * _Nonnull process) {
         NSString *AppName = [process stringForQuery:@"app-name"];
         NSString *LibName = [process stringForQuery:@"lib-name"];
         BOOL gitee = [process flag:@"gitee"];
         BOOL ssh = [process flag:@"ssh"];
-//        BOOL forceRemote = [process flag:@"force-remote"];
+        BOOL ignoreCache = [process flag:@"ignore-cache"];
         BOOL no_pod_install = [process flag:@"no-pod-install"];
+        MUPath *cacheDirectory = [self cli_cacheDirectory];
         
         MUPath *input = [MUPath pathWithString:[process pathForIndex:0]];
         MUPath *app = nil;
@@ -72,23 +72,35 @@
         
         TLCreator *creator = [[TLCreator alloc] init];
         
-        NSString *template = process.queries[@"template"];
-        if (!template) {
-            NSString *scheme = ssh ? @"git@" : @"https://";
-            NSString *domain = gitee ? @"gitee.com" : @"github.com";
-            NSString *userSep = ssh ? @":" : @"/";
-            NSString *url = [NSString stringWithFormat:@"%@%@%@MUHook/Template.git", scheme, domain, userSep];
-            [creator addGitClone:url branch:TEMPLATE_VERSION];
-        }
-        else if ([template hasPrefix:@"http"] || [template hasPrefix:@"git@"]) {
-            [creator addGitClone:template branch:@"master"];
-        }
-        else {
-            [creator addStep:[TLStep step:@"Copy template" block:^(MUPath *path, id<TLInvoker> invoker) {
-                MUPath *from = [MUPath pathWithString:template];
-                MUPath *to = path;
-                [from copyTo:to autoCover:YES];
-            }]];
+        TLStep *popCache = [TLStep step:@"Copy template from caches" block:^(MUPath *path, id<TLInvoker> invoker) {
+            [cacheDirectory copyTo:path autoCover:YES];
+        }];
+        TLStep *pushCache = [TLStep step:@"Cache template" block:^(MUPath *path, id<TLInvoker> invoker) {
+            [cacheDirectory.superpath createDirectoryWithCleanContents:NO];
+            [cacheDirectory remove];
+            [path copyTo:cacheDirectory autoCover:YES];
+        }];
+        
+        if (!ignoreCache && cacheDirectory.contents.count > 2) {
+            [creator addStep:popCache];
+        } else {
+            NSString *template = process.queries[@"template"];
+            if (!template) {
+                NSString *url = [self templateUrlWithGitee:gitee ssh:ssh];
+                [creator addGitClone:url branch:TEMPLATE_VERSION];
+                [creator addStep:pushCache];
+            }
+            else if ([template hasPrefix:@"http"] || [template hasPrefix:@"git@"]) {
+                [creator addGitClone:template branch:@"master"];
+                [creator addStep:pushCache];
+            }
+            else {
+                [creator addStep:[TLStep step:@"Copy template" block:^(MUPath *path, id<TLInvoker> invoker) {
+                    MUPath *from = [MUPath pathWithString:template];
+                    MUPath *to = path;
+                    [from copyTo:to autoCover:YES];
+                }]];
+            }
         }
         
         [creator addReplaceStep:^(TLReplaceStep *step) {
