@@ -16,4 +16,6 @@
 
 + (MUPath *)cli_cacheDirectory;
 
++ (MUPath *)cli_cacheDirectoryForVersion:(NSString *)version;
+
 @end

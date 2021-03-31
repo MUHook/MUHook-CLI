@@ -26,4 +26,8 @@
     return [[self cli_rootDirectory] subpathWithComponent:@"caches"];
 }
 
++ (MUPath *)cli_cacheDirectoryForVersion:(NSString *)version {
+    return [[self cli_cacheDirectory] subpathWithComponent:version];
+}
+
 @end

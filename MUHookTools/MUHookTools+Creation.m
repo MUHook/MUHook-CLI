@@ -29,7 +29,7 @@
         BOOL ssh = [process flag:@"ssh"];
         BOOL ignoreCache = [process flag:@"ignore-cache"];
         BOOL no_pod_install = [process flag:@"no-pod-install"];
-        MUPath *cacheDirectory = [self cli_cacheDirectory];
+        MUPath *cacheDirectory = [self cli_cacheDirectoryForVersion:TEMPLATE_VERSION];
         
         MUPath *input = [MUPath pathWithString:[process pathForIndex:0]];
         MUPath *app = nil;
