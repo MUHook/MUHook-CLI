@@ -19,10 +19,16 @@
     create.setQuery(@"app-name").setAbbr('a').optional().setExample(@"AppName").setExplain(@"Custom app name.");
     create.setQuery(@"lib-name").setAbbr('l').optional().setExample(@"AppPlugin").setExplain(@"Dylib file name.");
     create.setQuery(@"template").setAbbr('t').optional().setExample(@"git-url|local-dir").setExplain(@"Template project");
+    create.setFlag(@"gitee").setExplain(@"Clone template from gitee.com, otherwise github.com");
+    create.setFlag(@"ssh").setExplain(@"Clone template with SSH key, otherwise HTTPs");
+//    create.setFlag(@"force-remote").setAbbr('f').setExplain(@"Force use remote repo, ignore local caches");
     create.setFlag(@"no-pod-install").setExplain(@"Skip `pod install` step.");
     [create handleProcess:^int(CLCommand * _Nonnull command, CLProcess * _Nonnull process) {
         NSString *AppName = [process stringForQuery:@"app-name"];
         NSString *LibName = [process stringForQuery:@"lib-name"];
+        BOOL gitee = [process flag:@"gitee"];
+        BOOL ssh = [process flag:@"ssh"];
+//        BOOL forceRemote = [process flag:@"force-remote"];
         BOOL no_pod_install = [process flag:@"no-pod-install"];
         
         MUPath *input = [MUPath pathWithString:[process pathForIndex:0]];
@@ -68,7 +74,11 @@
         
         NSString *template = process.queries[@"template"];
         if (!template) {
-            [creator addGitClone:@"https://github.com/MUHook/Template.git" branch:TEMPLATE_VERSION];
+            NSString *scheme = ssh ? @"git@" : @"https://";
+            NSString *domain = gitee ? @"gitee.com" : @"github.com";
+            NSString *userSep = ssh ? @":" : @"/";
+            NSString *url = [NSString stringWithFormat:@"%@%@%@MUHook/Template.git", scheme, domain, userSep];
+            [creator addGitClone:url branch:TEMPLATE_VERSION];
         }
         else if ([template hasPrefix:@"http"] || [template hasPrefix:@"git@"]) {
             [creator addGitClone:template branch:@"master"];
