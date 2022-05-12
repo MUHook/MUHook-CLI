@@ -25,6 +25,7 @@
     [create handleProcess:^int(CLCommand * _Nonnull command, CLProcess * _Nonnull process) {
         NSString *AppName = [process stringForQuery:@"app-name"];
         NSString *LibName = [process stringForQuery:@"lib-name"];
+        NSString *template = [process stringForQuery:@"template"];
         BOOL gitee = [process flag:@"gitee"];
         BOOL ssh = [process flag:@"ssh"];
         BOOL ignoreCache = [process flag:@"ignore-cache"];
@@ -81,16 +82,9 @@
             [path copyTo:cacheDirectory autoCover:YES];
         }];
         
-        if (!ignoreCache && cacheDirectory.contents.count > 2) {
-            [creator addStep:popCache];
-        } else {
-            NSString *template = process.queries[@"template"];
-            if (!template) {
-                NSString *url = [self templateUrlWithGitee:gitee ssh:ssh];
-                [creator addGitClone:url branch:TEMPLATE_VERSION];
-                [creator addStep:pushCache];
-            }
-            else if ([template hasPrefix:@"http"] || [template hasPrefix:@"git@"]) {
+        if (template) {
+            // special template
+            if ([template hasPrefix:@"http"] || [template hasPrefix:@"git@"]) {
                 [creator addGitClone:template branch:@"master"];
                 [creator addStep:pushCache];
             }
@@ -101,6 +95,16 @@
                     [from copyTo:to autoCover:YES];
                 }]];
             }
+        }
+        else if (!ignoreCache && cacheDirectory.contents.count > 2) {
+            // User cache and cache is exist
+            [creator addStep:popCache];
+        }
+        else {
+            // ignore cache or cache is not exist
+            NSString *url = [self templateUrlWithGitee:gitee ssh:ssh];
+            [creator addGitClone:url branch:TEMPLATE_VERSION];
+            [creator addStep:pushCache];
         }
         
         [creator addReplaceStep:^(TLReplaceStep *step) {
